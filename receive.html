@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Satoshi Jump</title>
+    <link href="styles/app.css" rel="stylesheet" type="text/css">
+    <script src="https://unpkg.com/@cmdcode/buff-utils"></script>
+  </head>
+  <body>
+
+    <div class="wrapper">
+
+      <header>
+        <h1 id="title">Satoshi Jump</h1>
+      </header>
+
+      <section class="main">
+        <p class="msgTitle">Data Stream:</p>
+        <canvas class="visualizer" height="60px"></canvas>
+        <div class="controls">
+          <button id="start">start</button>
+          <button id="stop">stop</button>
+          <button id="ack">ack</button>
+          <button id="nack">nack</button>
+        </div>
+        <pre id="feed"></pre>
+        <div id="text">
+          <p class="msgTitle">Message Window:</p>
+          <pre id="msgBox">Now listening!</pre>
+          <button id="recv">Receive</button>
+        </div>
+      </section>
+    </div>
+    <script src="scripts/soundboard.js" type="module"></script>
+    <script src="scripts/app.js" type="module"></script>
+  </body>
+</html>

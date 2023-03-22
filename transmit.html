@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-size: 1.15rem;
+      font-family: Arial, sans-serif;
+    }
+    html {
+      max-width: 70ch;
+      padding: 3rem 1rem;
+      margin: auto;
+      line-height: 1.25;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    input, textarea {
+      line-height: 1.25;
+      width: 100%;
+      height: 1.8rem;
+      font-size: 1.15rem;
+      border: 1px solid grey;
+    }
+    textarea {
+      height: auto;
+    }
+    @media screen and (max-width: 600px) {
+    }
+  </style>
+  <script>
+    var $ = document.querySelector.bind( document );
+    var $$ = document.querySelectorAll.bind( document );
+    var url_params = new URLSearchParams( window.location.search );
+    var url_keys = url_params.keys();
+    var $_GET = {}
+    var timelength = 1000;
+    for ( var key of url_keys ) $_GET[ key ] = url_params.get( key );
+      function convert( text ) {
+        var encoder = new TextEncoder().encode( text );
+        return [...new Uint8Array(encoder)]
+        .map( x => x.toString( 16 ).padStart( 2, "0" ) )
+        .join( "" );
+      }
+      function waitSomeSeconds( num ) {
+        return new Promise( function( resolve, reject ) {
+          setTimeout( function() { resolve( "" ); }, parseInt( num ) * timelength );
+        });
+      }
+    </script>
+
+  </head>
+  <body>
+    <h1>Welcome to Satoshi Jump</h1>
+    <textarea class="text_input" rows="10">This is a test</textarea>
+    <button class="send">Send</button>
+    <script>
+      var time = 0.25;
+      var timeover2 = 85;
+      // var timeover2 = time;
+      var responseTimeoutDelay = 5;
+      var hex = "";
+      var frame = {}
+      frame[ "init" ] = 0;
+      frame[ "length" ] = 8;
+      frame[ "message" ] = "";
+      frame[ "duration" ] = frame[ "length" ] * time;
+      frame[ "status" ] = 0;
+
+      function playSound( hertz, milliseconds ) {
+        var a=new AudioContext();
+        var oscillator=a.createOscillator();
+        oscillator.type="sine";
+        gainNode=a.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(a.destination);
+        oscillator.frequency.value=hertz;
+        oscillator.start();
+        setTimeout(()=>{
+          oscillator.stop();
+        }, milliseconds);
+      }
+
+      async function sendPacket( hex ) {
+        //start, message size (byte), window size (byte), stop, start, data
+        var message_size = hex.length / 2;
+        var window_size = 4;
+        hex = "G" + hex.toUpperCase() + "J";
+        return new Promise( function( resolve, reject ) {
+          for ( let i=0; i<hex.length; i++ ) {
+            (function(i) {
+              setTimeout(function() {
+                console.log(i + ">" + hex[i] + "\n");
+                if ( Number( hex[i] ) == 0 ) {
+                  playSound(941, timeover2);
+                  playSound(1336, timeover2);
+                }
+                if ( Number( hex[i] ) == 1 ) {
+                  playSound(697, timeover2);
+                  playSound(1209, timeover2);
+                }
+                if ( Number( hex[i] ) == 2 ) {
+                  playSound(697, timeover2);
+                  playSound(1336, timeover2);
+                }
+                if ( Number( hex[i] ) == 3 ) {
+                  playSound(697, timeover2);
+                  playSound(1447, timeover2);
+                }
+                if ( Number( hex[i] ) == 4 ) {
+                  playSound(770, timeover2);
+                  playSound(1209, timeover2);
+                }
+                if ( Number( hex[i] ) == 5 ) {
+                  playSound(770, timeover2);
+                  playSound(1336, timeover2);
+                }
+                if ( Number( hex[i] ) == 6 ) {
+                  playSound(770, timeover2);
+                  playSound(1447, timeover2);
+                }
+                if ( Number( hex[i] ) == 7 ) {
+                  playSound(852, timeover2);
+                  playSound(1209, timeover2);
+                }
+                if ( Number( hex[i] ) == 8 ) {
+                  playSound(852, timeover2);
+                  playSound(1336, timeover2);
+                }
+                if ( Number( hex[i] ) == 9 ) {
+                  playSound(852, timeover2);
+                  playSound(1447, timeover2);
+                }
+                if ( hex[i] == "A" ) {
+                  playSound(697, timeover2);
+                  playSound(1633, timeover2);
+                }
+                if ( hex[i] == "B" ) {
+                  playSound(770, timeover2);
+                  playSound(1633, timeover2);
+                }
+                if ( hex[i] == "C" ) {
+                  playSound(852, timeover2);
+                  playSound(1633, timeover2);
+                }
+                if ( hex[i] == "D" ) {
+                  playSound(941, timeover2);
+                  playSound(1633, timeover2);
+                }
+                if ( hex[i] == "E" ) {
+                  playSound(941, timeover2);
+                  playSound(1209, timeover2);
+                }
+                if ( hex[i] == "F" ) {
+                  playSound(941, timeover2);
+                  playSound(1477, timeover2);
+                }
+                //start
+                if ( hex[i] == "G" ) {
+                  playSound(697, timeover2);
+                  playSound(1776, timeover2);
+                }
+                //ack
+                if ( hex[i] == "H" ) {
+                  playSound(697, timeover2);
+                  playSound(1913, timeover2);
+                }
+                //nack
+                if ( hex[i] == "I" ) {
+                  playSound(770, timeover2);
+                  playSound(1776, timeover2);
+                }
+                //stop
+                if ( hex[i] == "J" ) {
+                  playSound(770, timeover2);
+                  playSound(1913, timeover2);
+                }
+                //size
+                if ( hex[i] == "K" ) {
+                  playSound(852, timeover2);
+                  playSound(1776, timeover2);
+                }
+                //res1
+                if ( hex[i] == "L" ) {
+                  playSound(852, timeover2);
+                  playSound(1913, timeover2);
+                }
+                //res2
+                if ( hex[i] == "M" ) {
+                  playSound(852, timeover2);
+                  playSound(1776, timeover2);
+                }
+                //res3
+                if ( hex[i] == "N" ) {
+                  playSound(852, timeover2);
+                  playSound(1913, timeover2);
+                }
+                if ( i == hex.length - 1 ) resolve( "message sent" );
+              }, time * timelength * ( i + 1 ) )
+            })(i);
+        }
+    });
+}
+
+async function sendRecursively() {
+  frame[ "message" ] = hex.substring( frame[ "init" ], frame[ "init" ] + frame[ "length" ] );
+  console.log( "hex:", hex );
+  console.log( "message:", frame[ "message" ] );
+  var sent = await sendPacket( hex );
+  //var sent = await sendPacket( frame[ "message" ] );
+  console.log( sent );
+  //todo: don't wait 5 seconds if they give us an ack right away
+  console.log("waiting..." );
+  await waitSomeSeconds( 5 );
+  if ( !frame[ "status" ] ) {
+          //sendRecursively();
+  } else {
+    frame[ "status" ] = 0;
+    frame[ "init" ] = frame[ "init" ] + frame[ "length" ];
+    sendRecursively();
+  }
+}
+
+$( '.send' ).onclick = async function() {
+  hex = convert( $( '.text_input' ).value );
+  sendRecursively();
+}
+</script>
+</body>
+</html>
