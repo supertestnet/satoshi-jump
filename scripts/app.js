@@ -612,23 +612,29 @@ if (navigator.mediaDevices.getUserMedia) {
       if (feedbuffer.length > 2) feedbuffer.shift()
     })
 
-    emitter.on('data', (value) => {
-      if ( add_to_buffer ) {
-        messageBuffer += value;
-        feedbox.innerText = messageBuffer
-      }
+    // emitter.on('data', (value) => {
+    //   if ( add_to_buffer ) {
+    //     messageBuffer += value;
+    //     feedbox.innerText = messageBuffer
+    //   }
 
-      console.log('emit:', value)
-    })
+    //   console.log('emit:', value)
+    // })
+
+    let intervalTimer, toneRate = 250
 
     emitter.on('ctrl', (value) => {
       if (value === 'start') {
         add_to_buffer = true;
         messageBuffer = "";
         console.log('emit: start')
+        clearInterval(intervalTimer)
+        intervalTimer = setInterval(async () => {
+          messageBuffer += await emitter.sample()
+        }, toneRate)
       }
       if (value === 'stop') {
-        
+        clearInterval(intervalTimer)
         add_to_buffer = false;
         console.log('emit: stop')
         console.log( 'message buffer:', messageBuffer );

@@ -69,6 +69,13 @@ export class ToneEmitter extends EventEmitter {
     })
   }
 
+  sample(timeout = 100) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve('0'), timeout)
+      this.once('data', (value) => resolve(value))
+    })
+  }
+
   cancel() {
     clearInterval(this.interval)
   }
