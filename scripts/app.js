@@ -633,7 +633,7 @@ if (navigator.mediaDevices.getUserMedia) {
         console.log('emit: stop')
         console.log( 'message buffer:', messageBuffer );
         var error_corrected_hex = messageBuffer;
-        var chunked_hex = error_corrected_hex.match(/.{1,24}/g);
+        var chunked_hex = error_corrected_hex.match(/.{1,32}/g);
         var fullmessagebuffer = "";
         chunked_hex.forEach( function( hex ) {
           var ec = RS( 16, 4 );
