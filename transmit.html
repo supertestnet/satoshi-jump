@@ -741,14 +741,14 @@
 
       async function send( hex ) {
         console.log( "full hex to send:", hex );
-        var chunked_hex = hex.match(/.{1,16}/g);
-        chunked_hex[ chunked_hex.length - 1 ] = chunked_hex[ chunked_hex.length - 1 ].padEnd( 20, "00" );
+        var chunked_hex = hex.match(/.{1,24}/g);
+        chunked_hex[ chunked_hex.length - 1 ] = chunked_hex[ chunked_hex.length - 1 ].padEnd( 32, "00" );
         console.log( "hex in 8 byte chunks:", chunked_hex );
         var padded_chunks = [];
         var encoded_chunks = [];
         var error_corrected_hex = "";
         chunked_hex.forEach( function( hex, index ) {
-          var padded_chunk = new Uint8Array( 10 );
+          var padded_chunk = new Uint8Array( 16 );
           hexToBytes( chunked_hex[ index ] ).forEach( function( item, index ) {
               padded_chunk[ index ] = item;
           });
@@ -756,7 +756,7 @@
         });
         console.log( "reed solomon prep:", JSON.parse( JSON.stringify( padded_chunks ) ) );
         padded_chunks.forEach( function( chunk ) {
-          var ec = RS( 10, 2 );
+          var ec = RS( 16, 4 );
           ec.encode( chunk );
         });
         console.log( "rs encoded chunks:", padded_chunks );
