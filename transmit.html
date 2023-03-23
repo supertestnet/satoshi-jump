@@ -742,7 +742,7 @@
       async function send( hex ) {
         console.log( "full hex to send:", hex );
         var chunked_hex = hex.match(/.{1,24}/g);
-        chunked_hex[ chunked_hex.length - 1 ] = chunked_hex[ chunked_hex.length - 1 ].padEnd( 32, "00" );
+        chunked_hex[ chunked_hex.length - 1 ] = chunked_hex[ chunked_hex.length - 1 ].padEnd( 24, "00" );
         console.log( "hex in 8 byte chunks:", chunked_hex );
         var padded_chunks = [];
         var encoded_chunks = [];
