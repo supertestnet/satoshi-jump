@@ -626,30 +626,30 @@
       var hex = "";
 
       const tone_map = {
+        '0': [ 941, 1336 ],
         '1': [ 697, 1209 ],
         '2': [ 697, 1336 ],
         '3': [ 697, 1477 ],
-        'A': [ 697, 1633 ],
-        'start': [ 697, 1776 ],
-        'ack' : [ 697, 1913 ],
         '4': [ 770, 1209 ],
         '5': [ 770, 1336 ],
         '6': [ 770, 1477 ],
-        'B': [ 770, 1633 ],
-        'nack': [ 770, 1776 ],
-        'stop': [ 770, 1913 ],
         '7': [ 852, 1209 ],
         '8': [ 852, 1336 ],
         '9': [ 852, 1477 ],
+        'A': [ 697, 1633 ],
+        'B': [ 770, 1633 ],
         'C': [ 852, 1633 ],
-        'E': [ 941, 1209 ],
-        '0': [ 941, 1336 ],
-        'F': [ 941, 1477 ],
         'D': [ 941, 1633 ],
+        'E': [ 941, 1209 ],
+        'F': [ 941, 1477 ],
+        //start
         'G': [ 697, 1776 ],
-        'H': [ 770, 1913 ],
+        //stop
+        'H': [ 770, 1776 ],
+        //ack
         'I' : [ 697, 1913 ],
-        'J': [ 770, 1776 ],
+        //nack
+        'J': [ 770, 1913 ]
       }
 
       class ToneGenerator {
@@ -679,26 +679,6 @@
             tg.play(tone_map[key][ 0 ], this.length)
             tg2.play(tone_map[key][ 1 ], this.length)
         }
-
-        start() {
-          this.play(697, this.length)
-          this.play(1776, this.length)
-        }
-
-        stop() {
-          this.play(770, this.length)
-          this.play(1913, this.length)
-        }
-
-        ack() {
-          this.play(697, this.length)
-          this.play(1913, this.length)
-        }
-
-        nack() {
-          this.play(770, this.length)
-          this.play(1776, this.length)
-        }
       }
 
       function playSound( hertz, milliseconds ) {
@@ -723,110 +703,6 @@
               setTimeout(function() {
                 console.log(i + ">" + hex[i] + "\n");
                 tg.tone( hex[i] )
-                // if ( Number( hex[i] ) == 0 ) {
-                //   playSound(941, timeover2);
-                //   playSound(1336, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 1 ) {
-                //   playSound(697, timeover2);
-                //   playSound(1209, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 2 ) {
-                //   playSound(697, timeover2);
-                //   playSound(1336, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 3 ) {
-                //   playSound(697, timeover2);
-                //   playSound(1447, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 4 ) {
-                //   playSound(770, timeover2);
-                //   playSound(1209, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 5 ) {
-                //   playSound(770, timeover2);
-                //   playSound(1336, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 6 ) {
-                //   playSound(770, timeover2);
-                //   playSound(1447, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 7 ) {
-                //   playSound(852, timeover2);
-                //   playSound(1209, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 8 ) {
-                //   playSound(852, timeover2);
-                //   playSound(1336, timeover2);
-                // }
-                // if ( Number( hex[i] ) == 9 ) {
-                //   playSound(852, timeover2);
-                //   playSound(1447, timeover2);
-                // }
-                // if ( hex[i] == "A" ) {
-                //   playSound(697, timeover2);
-                //   playSound(1633, timeover2);
-                // }
-                // if ( hex[i] == "B" ) {
-                //   playSound(770, timeover2);
-                //   playSound(1633, timeover2);
-                // }
-                // if ( hex[i] == "C" ) {
-                //   playSound(852, timeover2);
-                //   playSound(1633, timeover2);
-                // }
-                // if ( hex[i] == "D" ) {
-                //   playSound(941, timeover2);
-                //   playSound(1633, timeover2);
-                // }
-                // if ( hex[i] == "E" ) {
-                //   playSound(941, timeover2);
-                //   playSound(1209, timeover2);
-                // }
-                // if ( hex[i] == "F" ) {
-                //   playSound(941, timeover2);
-                //   playSound(1477, timeover2);
-                // }
-                // //start
-                // if ( hex[i] == "G" ) {
-                //   playSound(697, timeover2);
-                //   playSound(1776, timeover2);
-                // }
-                // //ack
-                // if ( hex[i] == "H" ) {
-                //   playSound(697, timeover2);
-                //   playSound(1913, timeover2);
-                // }
-                // //nack
-                // if ( hex[i] == "I" ) {
-                //   playSound(770, timeover2);
-                //   playSound(1776, timeover2);
-                // }
-                // //stop
-                // if ( hex[i] == "J" ) {
-                //   playSound(770, timeover2);
-                //   playSound(1913, timeover2);
-                // }
-                // //size
-                // if ( hex[i] == "K" ) {
-                //   playSound(852, timeover2);
-                //   playSound(1776, timeover2);
-                // }
-                // //res1
-                // if ( hex[i] == "L" ) {
-                //   playSound(852, timeover2);
-                //   playSound(1913, timeover2);
-                // }
-                // //res2
-                // if ( hex[i] == "M" ) {
-                //   playSound(852, timeover2);
-                //   playSound(1776, timeover2);
-                // }
-                // //res3
-                // if ( hex[i] == "N" ) {
-                //   playSound(852, timeover2);
-                //   playSound(1913, timeover2);
-                // }
                 if ( i == hex.length - 1 ) resolve( "message sent" );
               }, time * timelength * ( i + 1 ) )
             })(i);
