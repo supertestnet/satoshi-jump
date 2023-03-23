@@ -633,16 +633,16 @@ if (navigator.mediaDevices.getUserMedia) {
         console.log('emit: stop')
         console.log( 'message buffer:', messageBuffer );
         var error_corrected_hex = messageBuffer;
-        var chunked_hex = error_corrected_hex.match(/.{1,20}/g);
+        var chunked_hex = error_corrected_hex.match(/.{1,24}/g);
         var fullmessagebuffer = "";
         chunked_hex.forEach( function( hex ) {
-          var ec = RS( 10, 2 );
+          var ec = RS( 16, 4 );
           var partial_message = new Int32Array( ec.messageLength );
           hexToBytes( hex ).forEach( function( item, index ) {
               partial_message[ index ] = item;
           });
           ec.decode( partial_message );
-          partial_message = bytesToHex( partial_message ).substring( 0, 16 );
+          partial_message = bytesToHex( partial_message ).substring( 0, 24 );
           fullmessagebuffer += partial_message;
         });
 
