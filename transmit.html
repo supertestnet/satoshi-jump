@@ -744,7 +744,7 @@
             (function(i) {
               setTimeout(function() {
                 console.log(i + ">" + hex[i] + "\n");
-                tg.tone( hex[i] )
+                tg.tone2( hex[i] )
                 if ( i == hex.length - 1 ) resolve( "message sent" );
               }, time * timelength * ( i + 1 ) )
             })(i);
