@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <script src="./scripts/newtone.js></script>
     <style>
       * {
         box-sizing: border-box;
@@ -722,6 +723,16 @@
         setTimeout(()=>{
           oscillator.stop();
         }, milliseconds);
+      }
+      
+      function playSound2( hertz, milliseconds ) {
+        var osc1 = new Tone.Oscillator().toDestination();
+        var osc2 = new Tone.Oscillator().toDestination();
+        osc1.frequency.value = "2000";
+        osc2.frequency.value = "2500";
+        var seconds_string = "+" + String( milliseconds / 1000 );
+        osc1.start().stop( seconds_string );
+        osc2.start().stop( seconds_string );
       }
 
       async function sendPacket( hex ) {
