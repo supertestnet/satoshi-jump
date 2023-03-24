@@ -726,13 +726,10 @@
       }
       
       function playSound2( hertz, milliseconds ) {
-        var osc1 = new Tone.Oscillator().toDestination();
-        var osc2 = new Tone.Oscillator().toDestination();
-        osc1.frequency.value = "2000";
-        osc2.frequency.value = "2500";
+        var osc = new Tone.Oscillator().toDestination();
+        osc.frequency.value = hertz;
         var seconds_string = "+" + String( milliseconds / 1000 );
-        osc1.start().stop( seconds_string );
-        osc2.start().stop( seconds_string );
+        osc.start().stop( seconds_string );
       }
 
       async function sendPacket( hex ) {
