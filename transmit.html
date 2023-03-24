@@ -709,6 +709,11 @@
             tg.play(tone_map[key][ 0 ], this.length)
             tg2.play(tone_map[key][ 1 ], this.length)
         }
+        tone2(key) {
+          const tones = tone_map[key]
+          playSound2(tone_map[key][ 0 ], this.length)
+          playSound2(tone_map[key][ 1 ], this.length)
+        }
       }
 
       function playSound( hertz, milliseconds ) {
