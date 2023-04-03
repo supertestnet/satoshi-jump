@@ -655,33 +655,6 @@
       var responseTimeoutDelay = 5;
       var hex = "";
 
-      const tone_map = {
-        '0': [ 941, 1336 ],
-        '1': [ 697, 1209 ],
-        '2': [ 697, 1336 ],
-        '3': [ 697, 1477 ],
-        '4': [ 770, 1209 ],
-        '5': [ 770, 1336 ],
-        '6': [ 770, 1477 ],
-        '7': [ 852, 1209 ],
-        '8': [ 852, 1336 ],
-        '9': [ 852, 1477 ],
-        'A': [ 697, 1633 ],
-        'B': [ 770, 1633 ],
-        'C': [ 852, 1633 ],
-        'D': [ 941, 1633 ],
-        'E': [ 941, 1209 ],
-        'F': [ 941, 1477 ],
-        //start
-        'G': [ 697, 1776 ],
-        //stop
-        'H': [ 770, 1776 ],
-        //ack
-        'I' : [ 697, 1913 ],
-        //nack
-        'J': [ 770, 1913 ]
-      }
-
       class ToneGenerator {
         constructor(length = 100) {
           this.length = length
@@ -694,6 +667,33 @@
           this.osc.type='sine'
         }
 
+        tone_map = {
+          '0': [ 941, 1336 ],
+          '1': [ 697, 1209 ],
+          '2': [ 697, 1336 ],
+          '3': [ 697, 1477 ],
+          '4': [ 770, 1209 ],
+          '5': [ 770, 1336 ],
+          '6': [ 770, 1477 ],
+          '7': [ 852, 1209 ],
+          '8': [ 852, 1336 ],
+          '9': [ 852, 1477 ],
+          'A': [ 697, 1633 ],
+          'B': [ 770, 1633 ],
+          'C': [ 852, 1633 ],
+          'D': [ 941, 1633 ],
+          'E': [ 941, 1209 ],
+          'F': [ 941, 1477 ],
+          //start
+          'G': [ 697, 1776 ],
+          //stop
+          'H': [ 770, 1776 ],
+          //ack
+          'I' : [ 697, 1913 ],
+          //nack
+          'J': [ 770, 1913 ]
+        }
+
         play(hertz, ms) {
           this.osc.frequency.value = hertz
           this.osc.start()
@@ -703,38 +703,17 @@
         }
 
         tone(key) {
-          const tones = tone_map[key]
-            var tg = new ToneGenerator()
-            var tg2 = new ToneGenerator()
-            tg.play(tone_map[key][ 0 ], this.length)
-            tg2.play(tone_map[key][ 1 ], this.length)
+          const tones = this.tone_map[key]
+          this.playSound(this.tone_map[key][ 0 ], this.length)
+          this.playSound(this.tone_map[key][ 1 ], this.length)
         }
-        tone2(key) {
-          const tones = tone_map[key]
-          playSound2(tone_map[key][ 0 ], this.length)
-          playSound2(tone_map[key][ 1 ], this.length)
-        }
-      }
 
-      function playSound( hertz, milliseconds ) {
-        var a=new AudioContext();
-        var oscillator=a.createOscillator();
-        oscillator.type="sine";
-        gainNode=a.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(a.destination);
-        oscillator.frequency.value=hertz;
-        oscillator.start();
-        setTimeout(()=>{
-          oscillator.stop();
-        }, milliseconds);
-      }
-      
-      function playSound2( hertz, milliseconds ) {
-        var osc = new Tone.Oscillator().toDestination();
-        osc.frequency.value = hertz;
-        var seconds_string = "+" + String( milliseconds / 1000 );
-        osc.start().stop( seconds_string );
+        playSound( hertz, milliseconds ) {
+          var osc = new Tone.Oscillator().toDestination();
+          osc.frequency.value = hertz;
+          var seconds_string = "+" + String( milliseconds / 1000 );
+          osc.start().stop( seconds_string );
+        }
       }
 
       async function sendPacket( hex ) {
@@ -744,7 +723,7 @@
             (function(i) {
               setTimeout(function() {
                 console.log(i + ">" + hex[i] + "\n");
-                tg.tone2( hex[i] )
+                tg.tone( hex[i] )
                 if ( i == hex.length - 1 ) resolve( "message sent" );
               }, time * timelength * ( i + 1 ) )
             })(i);
