@@ -6,7 +6,6 @@
     <title>Satoshi Jump</title>
     <link href="styles/app.css" rel="stylesheet" type="text/css">
     <script src="https://unpkg.com/@cmdcode/buff-utils"></script>
-    <script src="./scripts/newtone.js"></script>
   </head>
   <body>
 
@@ -35,72 +34,5 @@
     </div>
     <script src="scripts/soundboard.js" type="module"></script>
     <script src="scripts/app.js?v=2" type="module"></script>
-    <script>
-      class ToneGenerator {
-        constructor(length = 100) {
-          this.length = length
-          this.ctx    = new AudioContext()
-          this.osc    = this.ctx.createOscillator()
-          this.gain   = this.ctx.createGain()
-          this.osc.connect(this.gain)
-          this.gain.connect(this.ctx.destination)
-
-          this.osc.type='sine'
-        }
-
-        tone_map = {
-          '0': [ 941, 1336 ],
-          '1': [ 697, 1209 ],
-          '2': [ 697, 1336 ],
-          '3': [ 697, 1477 ],
-          '4': [ 770, 1209 ],
-          '5': [ 770, 1336 ],
-          '6': [ 770, 1477 ],
-          '7': [ 852, 1209 ],
-          '8': [ 852, 1336 ],
-          '9': [ 852, 1477 ],
-          'A': [ 697, 1633 ],
-          'B': [ 770, 1633 ],
-          'C': [ 852, 1633 ],
-          'D': [ 941, 1633 ],
-          'E': [ 941, 1209 ],
-          'F': [ 941, 1477 ],
-          //start
-          'G': [ 697, 1776 ],
-          //stop
-          'H': [ 770, 1776 ],
-          //ack
-          'I' : [ 697, 1913 ],
-          //nack
-          'J': [ 770, 1913 ]
-        }
-
-        play(hertz, ms) {
-          this.osc.frequency.value = hertz
-          this.osc.start()
-          setTimeout(()=>{
-            this.osc.stop()
-          }, ms)
-        }
-
-        tone(key) {
-          const tones = this.tone_map[key]
-          this.playSound(this.tone_map[key][ 0 ], this.length)
-          this.playSound(this.tone_map[key][ 1 ], this.length)
-        }
-
-        playSound( hertz, milliseconds ) {
-          var osc = new Tone.Oscillator().toDestination();
-          osc.frequency.value = hertz;
-          var seconds_string = "+" + String( milliseconds / 1000 );
-          osc.start().stop( seconds_string );
-        }
-      }
-
-      function stop() {
-        var tg = new ToneGenerator();
-        tg.tone( "J" );
-      }
-    </script>
   </body>
 </html>

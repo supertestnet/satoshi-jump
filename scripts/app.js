@@ -1,8 +1,5 @@
 import { visualize }      from './visualizer.js'
 import { ToneEmitter }    from './tone.js'
-import { ToneController } from './controller.js'
-
-const { Buff } = window.buffUtils
 
 /* #!/usr/bin/env node
 * Original implementation is ZXing and ported to JavaScript by cho45.
@@ -581,12 +578,6 @@ const msgbox   = document.querySelector('#msgBox')
 const feedbox  = document.querySelector('#feed')
 
 const testMsg = 'god'
-const hex = Buff.str(testMsg).hex
-console.log('test:', testMsg)
-console.log('length:', hex.length)
-console.log('hex:', hex)
-console.log('chksum:', Buff.hex(hex).digest.slice(-3).hex)
-
 
 if (navigator.mediaDevices.getUserMedia) {
   console.log('getUserMedia supported.');
@@ -604,6 +595,24 @@ if (navigator.mediaDevices.getUserMedia) {
     let messageBuffer2 = [];
     let message       = ''
     let feedbuffer = []
+
+    const startBtn = document.querySelector('#start')
+    const stopBtn  = document.querySelector('#stop')
+    const ackBtn   = document.querySelector('#ack')
+    const nackBtn  = document.querySelector('#nack')
+
+    startBtn.addEventListener('click', () => {
+      emitter.emit('ctrl', 'start')
+    })
+    stopBtn.addEventListener('click', () => {
+      emitter.emit('ctrl', 'stop')
+    })
+    ackBtn.addEventListener('click', () => {
+      emitter.emit('ctrl', 'ack')
+    })
+    nackBtn.addEventListener('click', () => {
+      emitter.emit('ctrl', 'nack')
+    })
 
     emitter.on('*', (eventName, value) => {
       feedbuffer.push(`${eventName}: ${value}`)
