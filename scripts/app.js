@@ -631,14 +631,20 @@ if (navigator.mediaDevices.getUserMedia) {
       console.log('emit:', value)
     })
 
+    const start_thold = 2
+    let start_counter = 0
+
     emitter.on('ctrl', (value) => {
       if (value === 'start') {
-        add_to_buffer = true;
+        start_counter += 1
+        if (start_counter >= start_thold) {
+          add_to_buffer = true;
+        }
         messageBuffer = "";
         console.log('emit: start')
       }
       if (value === 'stop') {
-        
+        start_counter = 0
         add_to_buffer = false;
         console.log('emit: stop')
         console.log( 'message buffer:', messageBuffer );
