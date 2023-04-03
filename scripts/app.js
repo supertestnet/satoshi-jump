@@ -575,7 +575,6 @@ function removeEndingZeroes( hex ) {
   return hex;
 }
 
-
 globalThis.globalStream = null
 
 const msgbox   = document.querySelector('#msgBox')
@@ -602,6 +601,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
     let add_to_buffer = false
     let messageBuffer = ''
+    let messageBuffer2 = [];
     let message       = ''
     let feedbuffer = []
 
@@ -614,6 +614,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
     emitter.on('data', (value) => {
       if ( add_to_buffer ) {
+        messageBuffer2.push( [ value, Date.now() ] )
         messageBuffer += value;
         feedbox.innerText = messageBuffer
       }
@@ -632,7 +633,35 @@ if (navigator.mediaDevices.getUserMedia) {
         add_to_buffer = false;
         console.log('emit: stop')
         console.log( 'message buffer:', messageBuffer );
-        var error_corrected_hex = messageBuffer;
+        console.log( 'message buffer 2:', JSON.stringify( messageBuffer2 ) );
+        var gaps = [];
+        var median;
+        var i; for ( i=0; i<messageBuffer2.length - 1; i++ ) {
+            gaps.push( messageBuffer2[ i + 1 ][ 1 ] - messageBuffer2[ i ][ 1 ] );
+        }
+        var sorted_gaps = JSON.parse( JSON.stringify( gaps ) );
+        sorted_gaps.sort(function(a,b){
+          return a-b;
+        });
+        var half = Math.floor(sorted_gaps.length / 2);
+        if (sorted_gaps.length % 2) {median = sorted_gaps[half];} else {median = (sorted_gaps[half - 1] + sorted_gaps[half]) / 2.0;}
+        var error_bottom = median - Math.floor( median / 8 );
+        var error_top = median + Math.floor( median / 8 );
+        var newMessageBuffer = "";
+        var i; for ( i=0; i<messageBuffer2.length - 1; i++ ) {
+            if ( gaps[ i ] > error_top ) {
+                newMessageBuffer += messageBuffer2[ i ][ 0 ];
+                var zeroes_to_insert = Math.round( gaps[ i ] / median );
+                var j; for ( j=0; j<zeroes_to_insert - 1; j++) newMessageBuffer += "0";
+            } else {
+                newMessageBuffer += messageBuffer2[ i ][ 0 ];
+            }
+        }
+        newMessageBuffer += messageBuffer2[ messageBuffer2.length - 1 ][ 0 ];
+        console.log( "message buffer without gap tolerance:", messageBuffer );
+        console.log( "message buffer with gap tolerance:", newMessageBuffer );
+        // var error_corrected_hex = messageBuffer;
+        var error_corrected_hex = newMessageBuffer;
         var chunked_hex = error_corrected_hex.match(/.{1,32}/g);
         var fullmessagebuffer = "";
         chunked_hex.forEach( function( hex ) {
@@ -670,4 +699,3 @@ if (navigator.mediaDevices.getUserMedia) {
 } else {
    console.log('getUserMedia not supported on your browser!');
 }
-
